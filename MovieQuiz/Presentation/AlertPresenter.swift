@@ -1,4 +1,3 @@
-
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol{
@@ -7,19 +6,14 @@ class AlertPresenter: AlertPresenterProtocol{
         self.delegate = delegate
     }
     
-    private func show(quiz result: AlertModel) {
+    func show(quiz result: AlertModel) {
         let alert = UIAlertController(
             title: result.title,
             message: result.message,
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            questionFactory?.requestNextQuestion()
-        }
+        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in result.completion() }
         alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        delegate?.present(alert, animated: true, completion: nil)
     }
 }
